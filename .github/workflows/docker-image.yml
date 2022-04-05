@@ -44,5 +44,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: | 
-          result=$(echo ${{needs.build.steps.meta.outputs.tag}})
+          result=$( echo${{needs.build.steps.meta.outputs.tags }})
           echo $result
