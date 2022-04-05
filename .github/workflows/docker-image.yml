@@ -1,23 +1,30 @@
 name: Docker Image CI
+# Branch from which the code is fetching
 on:
   push:
     branches: [ main ]
+# Define the env variable which need to be used
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_TAG: ${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout repo
+    - name: checkout repo #checkout the repo
       uses: actions/checkout@v2
-    - name: Docker meta
+    - name: git package creation #create the package in the 
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-         images: ghcr.io/badaltechiepi/spring
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
          tag-sha: true
+         tag-latest: true
     - name: Login to GHCR
       uses: docker/login-action@v1
       with:
-         registry: ghcr.io
+         registry: ${{ env.REGISTRY }}
          username: ${{ secrets.GIT_USER }}
          password: ${{ secrets.GIT_PASS }} 
     - name: Build image
@@ -43,6 +50,9 @@ jobs:
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-region: us-west-2
       - name: Deploy image to Amazon EKS
+        env:
+         IMAGE_NAME: ${{ github.repository }}
+         IMAGE_TAG: ${{ github.sha }}
         run: |
           aws sts get-caller-identity
           aws eks --region us-west-2 update-kubeconfig --name my-cluster-gitaction
@@ -50,4 +60,5 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          helm install springpetclinic springhelm/.
+          echo "$IMAGE_NAME"
+          echo "$IMAGE_TAG"
