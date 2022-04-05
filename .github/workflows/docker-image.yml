@@ -37,4 +37,4 @@ jobs:
     - name: image-name
       env: 
          IMAGE: ${{ steps.meta.outputs.tags }}
-      run: echo "The image tag is $( $IMAGE | cut -d ":" -f 2)"
+      run: echo "The image tag is $( ${{ env.IMAGE }} | cut -d ":" -f 2)"
