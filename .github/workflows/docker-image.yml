@@ -38,4 +38,4 @@ jobs:
       env:
         image: ${{ steps.meta.outputs.tags }}
       run: |
-         echo "helm install --set=${{ env.image }}"
+         echo "helm install --set=`${{ env.image }} | cut -d '/' -f 3` "
