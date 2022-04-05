@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-       output1: ${{ steps.docker_meta.outputs.tags }}
+       output1: ${{ steps.docker_meta.outputs }}
     steps:
     - name: checkout repo #checkout the repo
       uses: actions/checkout@v2
@@ -21,7 +21,6 @@ jobs:
       with:
          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
          tag-sha: true
-         tag-edge: false
          tag-latest: true
     - name: Login to GHCR
       uses: docker/login-action@v1
