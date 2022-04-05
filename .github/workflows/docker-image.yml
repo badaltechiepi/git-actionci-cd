@@ -34,7 +34,8 @@ jobs:
         context: .
         push: true
         tags: ${{ steps.meta.outputs.tags }}
-    - name: image-name
-      env: 
-         IMAGE: ${{ steps.meta.outputs.tags }}
-      run: echo "$IMAGE | cut -d ':' -f 2"
+    - name: Deploy to Kubernetes cluster 
+      env:
+        image: ${{ steps.meta.outputs.tags }}
+      run: |
+         echo $image 
