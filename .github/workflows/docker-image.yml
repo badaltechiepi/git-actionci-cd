@@ -60,4 +60,6 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
+          echo "$IMAGE_NAME"
+          echo "$IMAGE_TAG"
           echo "{{ ghcr.io/badaltechiepi/$IMAGE_NAME:$IMAGE_TAG }}"
