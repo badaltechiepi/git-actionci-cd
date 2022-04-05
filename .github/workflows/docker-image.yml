@@ -37,5 +37,12 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }} 
     - name: out put of tags and labels
       run: |
-          echo "The tag is ${{ steps.meta.outputs.tags }}"
-          echo " The label is ${{ steps.meta.outputs.labels }}"
+          IMAGE=$(echo "The tag is ${{ steps.meta.outputs.tags }} | cut -d ":"  -f 2")
+          echo $IMAGE
+  deployement:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: | 
+          result=$(echo ${{needs.build.steps.meta.outputs.tag}})
+          echo $result
