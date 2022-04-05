@@ -39,4 +39,4 @@ jobs:
       run: |
         echo '::set-output name=image::${{ steps.meta.outputs.tags }}'
     - name: Get the image
-      run: echo "The image is ${{ steps.image-name.outputs.image }}"
+      run: echo "The image is ${{ steps.image-name.outputs.image-name }}"
