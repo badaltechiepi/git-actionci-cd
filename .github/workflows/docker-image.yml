@@ -1,7 +1,9 @@
 name: Docker Image CI
+# Branch from which the code is fetching
 on:
   push:
     branches: [ main ]
+# Define the env variable which need to be used
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}  
@@ -9,13 +11,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout repo
+    - name: checkout repo #checkout the repo
       uses: actions/checkout@v2
-    - name: git package
+    - name: git package creation #create the package in the 
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-         images: ghcr.io/${{ env.IMAGE_NAME }}
+         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+         tag-sha: true
+         tag-edge: false
+         tag-latest: true
     - name: Login to GHCR
       uses: docker/login-action@v1
       with:
@@ -52,4 +57,4 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          helm install springpetclinic springhelm/.
+          helm install springpetclinic --set image.repository={{ steps.docker_meta.outputs.tags }} springhelm/.
