@@ -1,18 +1,50 @@
 name: Docker Image CI
-
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: checkout repo
+      uses: actions/checkout@v2
+    - name: Docker meta
+      id: docker_meta
+      uses: crazy-max/ghaction-docker-meta@v1
+      with:
+         images: ghcr.io/badaltechiepi/spring
+         tag-sha: true
+    - name: Login to GHCR
+      uses: docker/login-action@v1
+      with:
+         registry: ghcr.io
+         username: ${{ secrets.GIT_USER }}
+         password: ${{ secrets.GIT_PASS }} 
+    - name: Build image
+      uses: docker/build-push-action@v2
+      with:
+         tags: ${{ steps.docker_meta.outputs.tags }} 
+         file: ./Dockerfile
+    - name: Push image
+      uses: docker/build-push-action@v2
+      with:
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          file: ./Dockerfile
+  deployement:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: us-west-2
+      - name: Deploy image to Amazon EKS
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+          echo $(helm list)
