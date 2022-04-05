@@ -10,8 +10,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-       output1: ${{ steps.docker_meta.outputs }}
     steps:
     - name: checkout repo #checkout the repo
       uses: actions/checkout@v2
@@ -58,4 +56,4 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          echo ${{needs.build.outputs.output1}}
+          echo "{{ ghcr.io/badaltechiepi/$env.IMAGE_NAME:$GITHUB_SHA }}""
