@@ -38,6 +38,4 @@ jobs:
     - name: image-name
       env: 
          IMAGE: ${{ steps.meta.outputs.tags }}
-    - name: pring-image
-      run: | 
-         echo $IMAGE
+      run: echo $IMAGE
