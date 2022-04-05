@@ -10,6 +10,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+       output1: ${{ steps.docker_meta.outputs.tags }}
     steps:
     - name: checkout repo #checkout the repo
       uses: actions/checkout@v2
@@ -57,4 +59,4 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          helm install springpetclinic --set image.repository=${{ steps.docker_meta.outputs.tags }} springhelm/.
+          helm install springpetclinic --set image.repository=${{ needs.build.outputs.output1 }} springhelm/.
