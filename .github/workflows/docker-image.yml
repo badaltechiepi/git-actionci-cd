@@ -35,25 +35,8 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }} 
-    - name: out put of tags and labels
+    - name: image-name
       run: |
-          IMAGE=$(echo "The tag is ${{ steps.meta.outputs.tags }} | cut -d ":"  -f 2")
-          echo $IMAGE
-  deployement:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Extract metadata (tags, labels) for Docker
-      id: meta
-      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-           type=sha,enable=true
-    - name: image name
-      run: |
-        IMAGE=$(echo "The tag is ${{ steps.meta.outputs.tags }} | cut -d ":"  -f 2")
-        echo "$IMAGE"
-    - name: Deploying the image
-      run: |
-         echo "helm install spring --set=$IMAGE spring/."
+        echo '::set-output name=image::${{ steps.meta.outputs.labels }}'
+    - name: Get the image
+      run: echo "The image is ${{ steps.image-name.outputs.image }}"
