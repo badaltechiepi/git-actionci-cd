@@ -57,4 +57,4 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          helm install springpetclinic --set image.repository={{ steps.docker_meta.outputs.tags }} springhelm/.
+          helm install springpetclinic --set image.repository=${{ steps.docker_meta.outputs.tags }} springhelm/.
