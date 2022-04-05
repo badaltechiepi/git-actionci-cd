@@ -61,4 +61,4 @@ jobs:
         image: ${{ steps.meta.outputs.tags }}
       run: |
           docker pull $image
-          helm install spring --set image.repository=$image springhelm/.
+          helm install spring --set image.repository=${{env.image}} springhelm/.
