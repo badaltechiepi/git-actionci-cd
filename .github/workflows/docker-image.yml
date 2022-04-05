@@ -34,8 +34,7 @@ jobs:
         context: .
         push: true
         tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }} 
     - name: image-name
       env: 
          IMAGE: ${{ steps.meta.outputs.tags }}
-      run: echo $IMAGE
+      run: echo "The image tag is $( $IMAGE | cut -d ":" -f 2)"
