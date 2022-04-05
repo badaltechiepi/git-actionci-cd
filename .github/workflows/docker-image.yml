@@ -56,4 +56,4 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          echo "{{ ghcr.io/badaltechiepi/$env.IMAGE_NAME:$GITHUB_SHA }}""
+          echo "{{ ghcr.io/badaltechiepi/$env.IMAGE_NAME:$GITHUB_SHA }}"
