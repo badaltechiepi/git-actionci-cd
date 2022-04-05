@@ -2,24 +2,22 @@ name: Docker Image CI
 on:
   push:
     branches: [ main ]
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: checkout repo
       uses: actions/checkout@v2
-    - name: git package
+    - name: Docker meta
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-         images: ghcr.io/$IMAGE_NAME
+         images: ghcr.io/badaltechiepi/spring
+         tag-sha: true
     - name: Login to GHCR
       uses: docker/login-action@v1
       with:
-         registry: $REGISTRY
+         registry: ghcr.io
          username: ${{ secrets.GIT_USER }}
          password: ${{ secrets.GIT_PASS }} 
     - name: Build image
