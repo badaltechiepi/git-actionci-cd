@@ -52,7 +52,7 @@ jobs:
     - name: Deploy image to Amazon EKS
       run: |
           aws sts get-caller-identity
-          aws eks --region us-west-2 update-kubeconfig --name my-cluster1
+          aws eks --region us-east-2 update-kubeconfig --name my-cluster1
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
