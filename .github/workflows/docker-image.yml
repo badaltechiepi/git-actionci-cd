@@ -63,6 +63,6 @@ jobs:
           docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA}
           image=$(docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA})
           echo "$image"
-          helm delete springpet
+          helm delete springpet | true
           helm install springpet --set image.repository="${image}" springhelm/.
       
