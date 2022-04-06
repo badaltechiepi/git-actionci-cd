@@ -60,6 +60,6 @@ jobs:
           git clone https://github.com/badaltechiepi/git-actionci-cd.git && cd git-actionci-cd
           ls -al
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
-          image=docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA}
+          image=$(docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA})
           helm install springpet --set image.repository=$image springhelm/.
       
