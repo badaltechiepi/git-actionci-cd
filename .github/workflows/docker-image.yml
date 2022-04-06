@@ -40,5 +40,4 @@ jobs:
           docker push $IMAGE_ID
       - name: pull image
         run: |
-          docker image pull $IMAGE_ID@sha256:${GITHUB_SHA}
-          docker image ls 
+          docker image pull ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:${GITHUB_SHA}
