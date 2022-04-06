@@ -16,7 +16,7 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       imagePullSecrets:
-        - name: {{ .Values.imagePullSecrets }}
+        - name: dockerconfigjson-github-com
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository | quote }}
