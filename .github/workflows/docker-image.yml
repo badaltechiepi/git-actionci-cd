@@ -43,7 +43,19 @@ jobs:
     - name: Log in to registry
         # This is where you will update the PAT to GITHUB_TOKEN
       run: echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
-    - name: Deploying the image
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: us-west-2
+    - name: Deploy image to Amazon EKS
       run: |
-           helm install spring --set=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} springhelm/.
+          aws sts get-caller-identity
+          aws eks --region us-west-2 update-kubeconfig --name my-cluster-gitaction
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+          helm version
+          helm install springpetclinic springhelm/.  
       
