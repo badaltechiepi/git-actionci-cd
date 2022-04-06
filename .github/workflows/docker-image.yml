@@ -57,5 +57,5 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
+          git clone https://github.com/badaltechiepi/git-actionci-cd.git && cd git-actionci-cd
           ls -al
-      
