@@ -62,6 +62,7 @@ jobs:
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
           auth=$(echo -n ${{ github.repository_owner }}:${{ secrets.GIT_TOKEN }} | base64)
           echo $auth
+          kubectl delete secret dockerconfigjson-github-com
           echo '{"auths":{"docker.pkg.github.com":{"auth":"$auth"}}}' | kubectl create secret generic dockerconfigjson-github-com --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=/dev/stdin
           helm delete springpet
           helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} --set imagePullSecrets=dockerconfigjson-github-com springhelm/.
