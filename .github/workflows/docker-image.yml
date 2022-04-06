@@ -40,5 +40,5 @@ jobs:
           docker push $IMAGE_ID:${GITHUB_SHA}
       - name: pull image
         run: |
-          docker pull $IMAGE_ID:$VERSION
+          docker pull $IMAGE_ID:${GITHUB_SHA}
           docker image ls 
