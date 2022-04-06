@@ -57,5 +57,6 @@ jobs:
           chmod 700 get_helm.sh
           ./get_helm.sh
           helm version
-          helm install springpetclinic .springhelm/
+          helm init
+          helm install springpetclinic ./springhelm/.
       
