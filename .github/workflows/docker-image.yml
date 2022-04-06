@@ -59,4 +59,5 @@ jobs:
           helm version
           git clone https://github.com/badaltechiepi/git-actionci-cd.git && cd git-actionci-cd
           ls -al
-          helm install springpet springhelm/.
+          helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} springhelm/.
+      
