@@ -60,12 +60,8 @@ jobs:
           git clone https://github.com/badaltechiepi/git-actionci-cd.git && cd git-actionci-cd
           ls -al
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
-          auth=$(echo -n ${{ github.repository_owner }}:${{ secrets.GIT_TOKEN }} | base64)
-          echo "the auth is $auth"
-          echo {"auths":{"ghcr.io":{"auth":"$auth"}}} > .dockerconfigjson
-          dockerconfigjson=$(echo -n '{"auths":{"ghcr.io":{"auth":"$auth"}}}' | base64)
-          echo "dockerdonfigjon is $dockerconfigjson"
           kubectl delete secret dockerconfigjson-github-com | true
+          kubectl create secret docker-registry dockerconfigjson-github-com --docker-server=https://ghcr.io --docker-username=${{ secrets.GIT_USER }} --docker-password=${{ secrets.GIT_TOKEN }} --docker-email=badalkumarsahu92@gmail.com
           helm delete springpet | true
           helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} --set dockerconfigjson=$dockerconfigjson springhelm/.
       
