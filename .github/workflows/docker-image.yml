@@ -62,7 +62,7 @@ jobs:
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
           auth=$(echo -n ${{ github.repository_owner }}:${{ secrets.GIT_TOKEN }} | base64)
           echo "the auth is $auth"
-          {"auths":{"ghcr.io":{"auth":"$auth"}}} > .dockerconfigjson
+          echo {"auths":{"ghcr.io":{"auth":"$auth"}}} > .dockerconfigjson
           dockerconfigjson=$(echo -n '{"auths":{"ghcr.io":{"auth":"$auth"}}}' | base64)
           echo "dockerdonfigjon is $dockerconfigjson"
           kubectl delete secret dockerconfigjson-github-com | true
