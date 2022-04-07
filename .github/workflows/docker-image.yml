@@ -61,9 +61,11 @@ jobs:
           ls -al
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
           auth=$(echo -n ${{ github.repository_owner }}:${{ secrets.GIT_TOKEN }} | base64)
-          echo $auth
+          echo "the auth is $auth"
+          {"auths":{"ghcr.io":{"auth":"$auth"}}} > .dockerconfigjson
+          dockerconfigjson=$(echo -n '{"auths":{"ghcr.io":{"auth":"$auth"}}}' | base64)
+          echo "dockerdonfigjon is $dockerconfigjson"
           kubectl delete secret dockerconfigjson-github-com | true
-          # echo '{"auths":{"ghcr.io":{"auth":"$auth"}}}' | kubectl create secret generic dockerconfigjson-github-com --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=/dev/stdin
           helm delete springpet | true
-          helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} springhelm/.
+          helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} --set dockerconfigjson=$dockerconfigjson springhelm/.
       
