@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+dockerconfigjson:
 
 image:
   repository: badalbks/springpetclinic:latest
