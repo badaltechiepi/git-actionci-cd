@@ -36,7 +36,7 @@
 
           <id>github</id>
 
-          <url>https://maven.pkg.github.com/badaltechiepi<repo-name></url>
+          <url>https://maven.pkg.github.com/badaltechiepi/git-actionci-cd</url>
 
           <snapshots>
 
