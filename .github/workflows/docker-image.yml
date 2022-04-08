@@ -3,7 +3,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - main
+      - master
 env:
   IMAGE_NAME: springpet
 jobs:
