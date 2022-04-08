@@ -4,9 +4,9 @@
 
      <id>github</id>
 
-     <username>${{ secrets.GIT_USER }}</username>
+     <username>badaltechiepi</username>
 
-     <password>${{ secrets.GIT_TOKEN }}</password>
+     <password>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</password>
 
      </server>
 
