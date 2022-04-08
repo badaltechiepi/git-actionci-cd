@@ -3,7 +3,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - main
+      - master
 env:
   IMAGE_NAME: springpet
 jobs:
@@ -36,7 +36,7 @@ jobs:
       - name: Build image
         run: |
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
-          curl -LJO  https://maven.pkg.github.com/badaltechiepi/git-actionci-cd/org.springframework.samples/2.3.0.BUILD-SNAPSHOT/spring-petclinic.jar      
+          curl -LJO  https://maven.pkg.github.com/badaltechiepi/git-actionci-cd/org.springframework.samples/2.3.1.BUILD-SNAPSHOT/spring-petclinic.jar      
           docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log in to registry
         # This is where you will update the PAT to GITHUB_TOKEN
@@ -79,8 +79,8 @@ jobs:
           helm version
           git clone https://github.com/badaltechiepi/git-actionci-cd.git && cd git-actionci-cd
           echo "${{ secrets.GIT_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GIT_USER }} --password-stdin
-          kubectl create secret docker-registry dockerconfigjson-github-com --docker-server=https://ghcr.io --docker-username=${{ secrets.GIT_USER }} --docker-password=${{ secrets.GIT_TOKEN }} --docker-email=badalkumarsahu92@gmail.com
           kubectl delete secret dockerconfigjson-github-com | true
+          kubectl create secret docker-registry dockerconfigjson-github-com --docker-server=https://ghcr.io --docker-username=${{ secrets.GIT_USER }} --docker-password=${{ secrets.GIT_TOKEN }} --docker-email=badalkumarsahu92@gmail.com
           helm delete springpet | true
           helm install springpet --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA} --set dockerconfigjson=$dockerconfigjson springhelm/.
       
